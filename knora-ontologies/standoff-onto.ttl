@@ -62,6 +62,7 @@
                   knora-base:objectDatatypeConstraint xsd:string .
 
 
+
 #################################################################
 #
 #    Intermediate Standoff Tags
@@ -84,6 +85,15 @@
                rdfs:subClassOf knora-base:StandoffTag ;
 
                rdfs:comment "Represents structural markup information in a TextValue"@en .
+
+
+###  http://www.knora.org/ontology/standoff#StandoffListTag
+
+:StandoffListTag rdf:type owl:Class ;
+
+                rdfs:subClassOf :StandoffStructuralTag ;
+
+                rdfs:comment "Represents a list in a TextValue"@en .
 
 
 #################################################################
@@ -202,7 +212,7 @@
 
 :StandoffOrderedListTag rdf:type owl:Class ;
 
-                rdfs:subClassOf :StandoffStructuralTag ;
+                rdfs:subClassOf :StandoffListTag ;
 
                 rdfs:comment "Represents an ordered list in a TextValue"@en .
 
@@ -211,7 +221,7 @@
 
 :StandoffUnorderedListTag rdf:type owl:Class ;
 
-                rdfs:subClassOf :StandoffStructuralTag ;
+                rdfs:subClassOf :StandoffListTag ;
 
                 rdfs:comment "Represents an unordered list in a TextValue"@en .
 
@@ -220,7 +230,13 @@
 
 :StandoffListElementTag rdf:type owl:Class ;
 
-                rdfs:subClassOf :StandoffStructuralTag ;
+                rdfs:subClassOf :StandoffStructuralTag ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty knora-base:standoffTagHasStartParent ;
+                                  owl:cardinality "1"^^xsd:nonNegativeInteger
+                                ] ;
+
+                knora-base:standoffParentClassConstraint :StandoffListTag ;
 
                 rdfs:comment "Represents a list element in a TextValue"@en .
 
