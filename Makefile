@@ -53,9 +53,13 @@ check-for-outdated-deps: ## check for outdated maven dependencies
 docker-build-knora-api-image: # build and publish knora-api docker image locally
 	@bazel run //docker/knora-api:image
 
-.PHONY: docker-publish-knora-api-image
-docker-publish-knora-api-image: # publish knora-api image to Dockerhub
-	@bazel run //docker/knora-api:push
+.PHONY: docker-publish-knora-api-image-intel
+docker-publish-knora-api-image-intel: # build and publish Intel knora-api image to Dockerhub
+	@bazel run //docker/knora-api:push_intel
+
+.PHONY: docker-publish-knora-api-image-arm
+docker-publish-knora-api-image-arm: # build and publish ARM knora-api image to Dockerhub
+	@bazel run //docker/knora-api:push_arm
 
 .PHONY: docker-build-knora-jena-fuseki-image
 docker-build-knora-jena-fuseki-image: # build and publish knora-jena-fuseki docker image locally

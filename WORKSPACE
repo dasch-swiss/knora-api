@@ -192,22 +192,21 @@ load(
     "container_pull",
 )
 
-# get distroless java
+# get openjdk 11-hotspot-focal / linux/amd64 / 10.05.2021
 container_pull(
-  name = "java_base",
-  registry = "gcr.io",
-  repository = "distroless/java",
-  # 'tag' is also supported, but digest is encouraged for reproducibility.
-  digest = "sha256:deadbeef",
-)
-
-# get openjdk
-container_pull(
-    name = "openjdk11",
+    name = "openjdk11_amd_64",
     registry = "docker.io",
     repository = "adoptopenjdk",
     tag = "11-jre-hotspot-bionic",
-    digest = "sha256:0e51b455654bd162c485a6a6b5b120cc82db453d9265cc90f0c4fb5d14e2f62e",
+    digest = "sha256:02336f69fe1740d231dc62f9ed37d800c7d5e9c59985e5ec1db619e68ef6989b",
+)
+
+# get adoptopenjdk 11-hotspot-focal / linux/arm64/v8 / 10.05.2021
+container_pull(
+    name = "openjdk11_arm_64_v8",
+    registry = "docker.io",
+    repository = "adoptopenjdk",
+    digest = "sha256:0a911036989eea8edfdf4d77c48d9297a194fe9eb75881010f04d3d7f38659a8",
 )
 
 # get sipi
