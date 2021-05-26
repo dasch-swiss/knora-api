@@ -25,6 +25,7 @@ import org.knora.webapi.core.LiveActorMaker
 import org.knora.webapi.responders.MockableResponderManager
 import org.knora.webapi.settings._
 import org.knora.webapi.store.MockableStoreManager
+import org.knora.webapi.store.eventstore.{EventStoreInMemImpl}
 import org.knora.webapi.store.iiif.MockSipiConnector
 
 /**
@@ -38,8 +39,11 @@ trait ManagersWithMockedSipi extends Managers {
   lazy val mockResponders: Map[String, ActorRef] = Map.empty[String, ActorRef]
 
   lazy val storeManager: ActorRef = context.actorOf(
-    Props(new MockableStoreManager(mockStoreConnectors = mockStoreConnectors, appActor = self) with LiveActorMaker),
-    name = StoreManagerActorName)
+    Props(
+      new MockableStoreManager(mockStoreConnectors = mockStoreConnectors, appActor = self, es = EventStoreInMemImpl)
+      with LiveActorMaker),
+    name = StoreManagerActorName
+  )
   lazy val responderManager: ActorRef = context.actorOf(
     Props(new MockableResponderManager(mockRespondersOrStoreConnectors = mockResponders, appActor = self)),
     name = RESPONDER_MANAGER_ACTOR_NAME)

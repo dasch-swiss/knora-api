@@ -1,0 +1,47 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_test", "scala_junit_test")
+load("//third_party:dependencies.bzl", "ALL_WEBAPI_MAIN_DEPENDENCIES", "BASE_TEST_DEPENDENCIES", "BASE_TEST_DEPENDENCIES_WITH_JSON", "BASE_TEST_DEPENDENCIES_WITH_JSON_LD")
+
+
+scala_test(
+    name = "EventStoreManagerSpec",
+    size = "small",  # 60s
+    srcs = [
+        "EventStoreManagerSpec.scala",
+    ],
+    data = [
+        "//knora-ontologies",
+        "//test_data",
+    ],
+    jvm_flags = ["-Dconfig.resource=fuseki.conf"],
+    # unused_dependency_checker_mode = "warn",
+    deps = ALL_WEBAPI_MAIN_DEPENDENCIES + [
+       "//webapi:main_library",
+       "//webapi:test_library",
+       "@maven//:com_eventstore_db_client_java",
+       "@maven//:io_perfmark_perfmark_api",
+   ] + BASE_TEST_DEPENDENCIES,
+)
+
+scala_junit_test(
+    name = "EventStoreZSpec",
+    size = "small",  # 60s
+    srcs = [
+        "EventStoreZSpec.scala",
+    ],
+    suffixes = ["Spec"],
+    jvm_flags = ["-Dconfig.resource=fuseki.conf"],
+    # unused_dependency_checker_mode = "warn",
+    deps = [
+        "//webapi/src/main/scala/org/knora/webapi",
+        "//webapi/src/main/scala/org/knora/webapi/store/eventstore",
+        "@maven//:com_eventstore_db_client_java",
+        "@maven//:com_fasterxml_jackson_core_jackson_annotations",
+        "@maven//:io_perfmark_perfmark_api",
+        "@maven//:dev_zio_zio_2_13",
+        "@maven//:dev_zio_zio_test_2_13",
+        "@maven//:dev_zio_zio_test_junit_2_13",
+        "@maven//:junit_junit",
+    ]
+)

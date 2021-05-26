@@ -1,9 +1,24 @@
 load("@io_bazel_rules_scala//scala:scala_toolchain.bzl", "scala_toolchain")
+load("@io_bazel_rules_scala//testing/toolchain:toolchain.bzl", "scala_testing_toolchain")
+load("@io_bazel_rules_scala//scala:providers.bzl", "declare_deps_provider")
 
 # scalac options like in KnoraBuild.sbt (warn-unused is added, as it seems good)
 scala_toolchain(
     name = "dsp_api_toolchain_impl",
-    scalacopts = ["-Ywarn-unused", "-feature", "-unchecked", "-deprecation", "-Yresolve-term-conflict:package"],
+    dep_providers = [
+        ":dsp_scala_macro_classpath_provider",
+    ],
+    scalacopts = [
+        "-Ywarn-unused",
+        "-feature",
+        "-unchecked",
+        "-deprecation",
+        "-Yresolve-term-conflict:package",
+        "-Ymacro-annotations",
+        # "-language:experimental.macros",
+        # "-Xplugin:paradise_2.12.13.jar",
+        # "-Xshow-phases",
+    ],
     unused_dependency_checker_mode = "off",
     visibility = ["//visibility:public"]
 )
@@ -13,4 +28,15 @@ toolchain(
     toolchain_type = "@io_bazel_rules_scala//scala:toolchain_type",
     toolchain = "dsp_api_toolchain_impl",
     visibility = ["//visibility:public"]
+)
+
+
+declare_deps_provider(
+    name = "dsp_scala_macro_classpath_provider",
+    deps_id = "scala_macro_classpath",
+    deps = [
+        "@io_bazel_rules_scala_scala_library",
+        "@io_bazel_rules_scala_scala_reflect",
+        # "@maven//org_scalamacros_paradise_2_12_13",
+    ],
 )
