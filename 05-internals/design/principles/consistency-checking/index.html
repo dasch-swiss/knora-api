@@ -1,0 +1,2674 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../../../../assets/icons/dasch-favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.0.1">
+    
+    
+      
+        <title>Consistency Checking - DSP-API</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.38780c08.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.3f72e892.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#7e56c2">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../../assets/style/theme.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="deep-purple" data-md-color-accent="deep-purple">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#consistency-checking" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../../../.." title="DSP-API" class="md-header-nav__button md-logo" aria-label="DSP-API">
+      
+  <img src="../../../../assets/icons/dasch-icon-white.svg" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            DSP-API
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Consistency Checking
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/dasch-swiss/dsp-api/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dasch-swiss/dsp-api
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+
+  
+
+<nav class="md-tabs md-tabs--active" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../../../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../../01-introduction/" class="md-tabs__link">
+          Introduction
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../../02-knora-ontologies/" class="md-tabs__link">
+          DSP Ontologies
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    
+    
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../../03-apis/" class="md-tabs__link">
+          APIs
+        </a>
+      
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../../04-publishing-deployment/" class="md-tabs__link">
+          Publishing and Deployment
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    
+    
+  
+  
+    
+    
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../" class="md-tabs__link md-tabs__link--active">
+          DSP Internals
+        </a>
+      
+    </li>
+  
+
+  
+
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../../07-sipi/" class="md-tabs__link">
+          SIPI
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../../08-lucene/" class="md-tabs__link">
+          Lucene
+        </a>
+      
+    </li>
+  
+
+      
+        
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../../00-release-notes/" class="md-tabs__link">
+          Release Notes
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="DSP-API" class="md-nav__button md-logo" aria-label="DSP-API">
+      
+  <img src="../../../../assets/icons/dasch-icon-white.svg" alt="logo">
+
+    </a>
+    DSP-API
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/dasch-swiss/dsp-api/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dasch-swiss/dsp-api
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Introduction
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Introduction" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Introduction
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../01-introduction/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../01-introduction/what-is-knora/" title="What is DSP?" class="md-nav__link">
+      What is DSP?
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../01-introduction/data-formats/" title="Data Formats in DSP-API" class="md-nav__link">
+      Data Formats in DSP-API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../01-introduction/standoff-rdf/" title="Standoff/RDF Text Markup" class="md-nav__link">
+      Standoff/RDF Text Markup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../01-introduction/example-project/" title="An Example Project" class="md-nav__link">
+      An Example Project
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      DSP Ontologies
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="DSP Ontologies" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        DSP Ontologies
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../02-knora-ontologies/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../02-knora-ontologies/introduction/" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../02-knora-ontologies/knora-base/" title="The Knora Base Ontology" class="md-nav__link">
+      The Knora Base Ontology
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../02-knora-ontologies/salsah-gui/" title="The SALSAH GUI Ontology" class="md-nav__link">
+      The SALSAH GUI Ontology
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      APIs
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="APIs" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        APIs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1" type="checkbox" id="nav-4-1">
+    
+    <label class="md-nav__link" for="nav-4-1">
+      The DSP APIs
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="The DSP APIs" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-1">
+        <span class="md-nav__icon md-icon"></span>
+        The DSP APIs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/feature-toggles/" title="Feature Toggles" class="md-nav__link">
+      Feature Toggles
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      API V1
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API V1" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        <span class="md-nav__icon md-icon"></span>
+        API V1
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/introduction/" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/authentication/" title="Authentication" class="md-nav__link">
+      Authentication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/reading-and-searching-resources/" title="Reading and Searching Resources" class="md-nav__link">
+      Reading and Searching Resources
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/xml-to-standoff-mapping/" title="XML to Standoff Mapping" class="md-nav__link">
+      XML to Standoff Mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/adding-resources/" title="Adding Resources" class="md-nav__link">
+      Adding Resources
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/reading-and-searching-resources/" title="Reading and Searching Resources" class="md-nav__link">
+      Reading and Searching Resources
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/reading-values/" title="Reading Values" class="md-nav__link">
+      Reading Values
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/adding-values/" title="Adding Values" class="md-nav__link">
+      Adding Values
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/changing-values/" title="Changing Values" class="md-nav__link">
+      Changing Values
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v1/delete-resources-and-values/" title="Deleting Resources and Values" class="md-nav__link">
+      Deleting Resources and Values
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      API V2
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API V2" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        <span class="md-nav__icon md-icon"></span>
+        API V2
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/introduction/" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/authentication/" title="Authentication" class="md-nav__link">
+      Authentication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/knora-iris/" title="Knora IRIs" class="md-nav__link">
+      Knora IRIs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/metadata/" title="Metadata" class="md-nav__link">
+      Metadata
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/reading-and-searching-resources/" title="Reading and Searching Resources" class="md-nav__link">
+      Reading and Searching Resources
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/reading-user-permissions/" title="Reading the User's Permissions on Resources and Values" class="md-nav__link">
+      Reading the User's Permissions on Resources and Values
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/getting-lists/" title="Getting Lists" class="md-nav__link">
+      Getting Lists
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/xml-to-standoff-mapping/" title="XML to Standoff Mapping" class="md-nav__link">
+      XML to Standoff Mapping
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/query-language/" title="Gravsearch - Virtual Graph Search" class="md-nav__link">
+      Gravsearch - Virtual Graph Search
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/editing-resources/" title="Editing Resources" class="md-nav__link">
+      Editing Resources
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/editing-values/" title="Editing Values" class="md-nav__link">
+      Editing Values
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/ontology-information/" title="Querying, Creating, and Updating Ontologies" class="md-nav__link">
+      Querying, Creating, and Updating Ontologies
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/tei-xml/" title="TEI/XML" class="md-nav__link">
+      TEI/XML
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-v2/permalinks/" title="Permalinks" class="md-nav__link">
+      Permalinks
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4">
+    
+    <label class="md-nav__link" for="nav-4-4">
+      Admin API
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Admin API" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        <span class="md-nav__icon md-icon"></span>
+        Admin API
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/introduction/" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/users/" title="Users Endpoint" class="md-nav__link">
+      Users Endpoint
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/projects/" title="Projects Endpoint" class="md-nav__link">
+      Projects Endpoint
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/groups/" title="Groups Endpoint" class="md-nav__link">
+      Groups Endpoint
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/lists/" title="Lists Endpoint" class="md-nav__link">
+      Lists Endpoint
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/lists_new-list-admin-routes_v1/" title="New Lists Endpoint" class="md-nav__link">
+      New Lists Endpoint
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/permissions/" title="Permissions Endpoint" class="md-nav__link">
+      Permissions Endpoint
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-admin/stores/" title="Stores Endpoint" class="md-nav__link">
+      Stores Endpoint
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-5" type="checkbox" id="nav-4-5">
+    
+    <label class="md-nav__link" for="nav-4-5">
+      Util API
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Util API" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-5">
+        <span class="md-nav__icon md-icon"></span>
+        Util API
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-util/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-util/health/" title="Health" class="md-nav__link">
+      Health
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../03-apis/api-util/version/" title="Version" class="md-nav__link">
+      Version
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Publishing and Deployment
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Publishing and Deployment" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        Publishing and Deployment
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../04-publishing-deployment/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../04-publishing-deployment/publishing/" title="Publishing" class="md-nav__link">
+      Publishing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../04-publishing-deployment/getting-started/" title="Getting Started with DSP-API" class="md-nav__link">
+      Getting Started with DSP-API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../04-publishing-deployment/configuration/" title="Configuration" class="md-nav__link">
+      Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../04-publishing-deployment/updates/" title="Updating Repositories when Upgrading DSP-API" class="md-nav__link">
+      Updating Repositories when Upgrading DSP-API
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
+    
+    <label class="md-nav__link" for="nav-6">
+      DSP Internals
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="DSP Internals" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        <span class="md-nav__icon md-icon"></span>
+        DSP Internals
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-1" type="checkbox" id="nav-6-1" checked>
+    
+    <label class="md-nav__link" for="nav-6-1">
+      Design
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Design" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-1">
+        <span class="md-nav__icon md-icon"></span>
+        Design
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-1-1" type="checkbox" id="nav-6-1-1" checked>
+    
+    <label class="md-nav__link" for="nav-6-1-1">
+      DSP-API Design Principles
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="DSP-API Design Principles" data-md-level="3">
+      <label class="md-nav__title" for="nav-6-1-1">
+        <span class="md-nav__icon md-icon"></span>
+        DSP-API Design Principles
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../design-overview/" title="Design Overview" class="md-nav__link">
+      Design Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../futures-with-akka/" title="Futures with Akka" class="md-nav__link">
+      Futures with Akka
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../http-module/" title="HTTP Module" class="md-nav__link">
+      HTTP Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../store-module/" title="Store Module" class="md-nav__link">
+      Store Module
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../triplestore-updates/" title="Triplestore Updates" class="md-nav__link">
+      Triplestore Updates
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Consistency Checking
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" title="Consistency Checking" class="md-nav__link md-nav__link--active">
+      Consistency Checking
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    Design
+  </a>
+  
+    <nav class="md-nav" aria-label="Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#empty-string-as-object" class="md-nav__link">
+    Empty string as object
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subject-and-object-class-constraints" class="md-nav__link">
+    Subject and object class constraints
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cardinality-constraints" class="md-nav__link">
+    Cardinality constraints
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../authentication/" title="Authentication" class="md-nav__link">
+      Authentication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../feature-toggles/" title="Feature Toggles" class="md-nav__link">
+      Feature Toggles
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../rdf-api/" title="RDF Processing API" class="md-nav__link">
+      RDF Processing API
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-1-2" type="checkbox" id="nav-6-1-2">
+    
+    <label class="md-nav__link" for="nav-6-1-2">
+      API V1 Design
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API V1 Design" data-md-level="3">
+      <label class="md-nav__title" for="nav-6-1-2">
+        <span class="md-nav__icon md-icon"></span>
+        API V1 Design
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v1/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v1/how-to-add-a-route/" title="How to Add an API v1 Route" class="md-nav__link">
+      How to Add an API v1 Route
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v1/json/" title="JSON in API v1" class="md-nav__link">
+      JSON in API v1
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-1-3" type="checkbox" id="nav-6-1-3">
+    
+    <label class="md-nav__link" for="nav-6-1-3">
+      API V2 Design
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API V2 Design" data-md-level="3">
+      <label class="md-nav__title" for="nav-6-1-3">
+        <span class="md-nav__icon md-icon"></span>
+        API V2 Design
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/overview/" title="API v2 Design Overview" class="md-nav__link">
+      API v2 Design Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/ontology-schemas/" title="Ontology Schemas" class="md-nav__link">
+      Ontology Schemas
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/smart-iris/" title="Smart IRIs" class="md-nav__link">
+      Smart IRIs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/content-wrappers/" title="Content Wrappers" class="md-nav__link">
+      Content Wrappers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/how-to-add-a-route/" title="How to Add an API v2 Route" class="md-nav__link">
+      How to Add an API v2 Route
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/json-ld/" title="JSON-LD Parsing and Formatting" class="md-nav__link">
+      JSON-LD Parsing and Formatting
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/ontology-management/" title="Ontology Management" class="md-nav__link">
+      Ontology Management
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/sipi/" title="DSP-API and Sipi" class="md-nav__link">
+      DSP-API and Sipi
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/gravsearch/" title="Gravsearch Design" class="md-nav__link">
+      Gravsearch Design
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/standoff/" title="Standoff Markup" class="md-nav__link">
+      Standoff Markup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/ark/" title="Archival Resource Key (ARK) Identifiers" class="md-nav__link">
+      Archival Resource Key (ARK) Identifiers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-v2/query-design/" title="SPARQL Query Design" class="md-nav__link">
+      SPARQL Query Design
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-1-4" type="checkbox" id="nav-6-1-4">
+    
+    <label class="md-nav__link" for="nav-6-1-4">
+      Admin API Design
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Admin API Design" data-md-level="3">
+      <label class="md-nav__title" for="nav-6-1-4">
+        <span class="md-nav__icon md-icon"></span>
+        Admin API Design
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-admin/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../api-admin/administration/" title="Administration" class="md-nav__link">
+      Administration
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-2" type="checkbox" id="nav-6-2">
+    
+    <label class="md-nav__link" for="nav-6-2">
+      Development
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Development" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-2">
+        <span class="md-nav__icon md-icon"></span>
+        Development
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/building-and-running/" title="Build and Running" class="md-nav__link">
+      Build and Running
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/intellij-config/" title="Setup IntelliJ for development of DSP-API" class="md-nav__link">
+      Setup IntelliJ for development of DSP-API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/bazel/" title="Bazel Notes" class="md-nav__link">
+      Bazel Notes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/testing/" title="Testing" class="md-nav__link">
+      Testing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/docker-cheat-sheet/" title="Docker Cheat Sheet" class="md-nav__link">
+      Docker Cheat Sheet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/monitoring/" title="Monitoring DSP-API" class="md-nav__link">
+      Monitoring DSP-API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/profiling/" title="Profiling DSP-API" class="md-nav__link">
+      Profiling DSP-API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/docker-compose/" title="Starting the DSP-Stack inside Docker Container" class="md-nav__link">
+      Starting the DSP-Stack inside Docker Container
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/updating-repositories/" title="Updating Repositories" class="md-nav__link">
+      Updating Repositories
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/generating-client-test-data/" title="Generating Client Test Data" class="md-nav__link">
+      Generating Client Test Data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/graphdb/" title="Starting GraphDB" class="md-nav__link">
+      Starting GraphDB
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../development/third-party/" title="Third-Party Dependencies" class="md-nav__link">
+      Third-Party Dependencies
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      SIPI
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="SIPI" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        <span class="md-nav__icon md-icon"></span>
+        SIPI
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../07-sipi/" title="Index" class="md-nav__link">
+      Index
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../07-sipi/setup-sipi-for-knora/" title="Setting Up Sipi for DSP-API" class="md-nav__link">
+      Setting Up Sipi for DSP-API
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../07-sipi/sipi-and-knora/" title="Interaction between Sipi and DSP-API" class="md-nav__link">
+      Interaction between Sipi and DSP-API
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      Lucene
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Lucene" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        <span class="md-nav__icon md-icon"></span>
+        Lucene
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../08-lucene/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../08-lucene/lucene-query-parser-syntax/" title="Lucene Query Parser Syntax" class="md-nav__link">
+      Lucene Query Parser Syntax
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../../faq/" title="Frequently Asked Questions" class="md-nav__link">
+      Frequently Asked Questions
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10">
+    
+    <label class="md-nav__link" for="nav-10">
+      Release Notes
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Release Notes" data-md-level="1">
+      <label class="md-nav__title" for="nav-10">
+        <span class="md-nav__icon md-icon"></span>
+        Release Notes
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../00-release-notes/" title="Changelog" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    Design
+  </a>
+  
+    <nav class="md-nav" aria-label="Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#empty-string-as-object" class="md-nav__link">
+    Empty string as object
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subject-and-object-class-constraints" class="md-nav__link">
+    Subject and object class constraints
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cardinality-constraints" class="md-nav__link">
+    Cardinality constraints
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/dasch-swiss/dsp-api/blob/main/docs/05-internals/design/principles/consistency-checking.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <!---
+Copyright © 2015-2021 the contributors (see Contributors.md).
+
+This file is part of DSP — DaSCH Service Platform.
+
+DSP is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+DSP is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public
+License along with DSP. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<h1 id="consistency-checking">Consistency Checking</h1>
+<h2 id="requirements">Requirements</h2>
+<p>Knora is designed to prevent inconsistencies in RDF data,
+as far as is practical, in a triplestore-independent way (see
+<a href="../triplestore-updates/">Triplestore Updates</a>). However, it is also
+useful to enforce consistency constraints in the triplestore itself, for
+two reasons:</p>
+<ol>
+<li>To prevent inconsistencies resulting from bugs in the DSP-API
+    server.</li>
+<li>To prevent users from inserting inconsistent data directly into the
+    triplestore, bypassing Knora.</li>
+</ol>
+<p>The design of the <code>knora-base</code> ontology supports two ways of specifying
+constraints on data (see <a href="../../../../02-knora-ontologies/knora-base/#consistency-checking">knora-base: Consistency Checking</a>
+for details):</p>
+<ol>
+<li>A property definition should specify the types that are allowed as
+    subjects and objects of the property, using
+    <code>knora-base:subjectClassConstraint</code> and (if it is an object
+    property) <code>knora-base:objectClassConstraint</code>. Every subproperty of
+    <code>knora-base:hasValue</code> or a <code>knora-base:hasLinkTo</code> (i.e. every
+    property of a resource that points to a <code>knora-base:Value</code> or to
+    another resource) is required have this constraint, because the
+    DSP-API server relies on it to know what type of object to expect
+    for the property. Use of <code>knora-base:subjectClassConstraint</code> is
+    recommended but not required.</li>
+<li>A class definition should use OWL cardinalities (see <a href="https://www.w3.org/TR/owl2-quick-reference/">OWL 2 Quick Reference Guide</a>)
+    to indicate the properties that instances of the class are allowed to
+    have, and to constrain the number of objects that each property can
+    have. Subclasses of <code>knora-base:Resource</code> are required to have a
+    cardinality for each subproperty of <code>knora-base:hasValue</code> or a
+    <code>knora-base:hasLinkTo</code> that resources of that class can have.</li>
+</ol>
+<p>Specifically, consistency checking should prevent the following:</p>
+<ul>
+<li>An object property or datatype property has a subject of the wrong
+    class, or an object property has an object of the wrong class
+    (GraphDB's consistency checke cannot check the types of literals).</li>
+<li>An object property has an object that does not exist (i.e. the
+    object is an IRI that is not used as the subject of any statements
+    in the repository). This can be treated as if the object is of the
+    wrong type (i.e. it can cause a violation of
+    <code>knora-base:objectClassConstraint</code>, because there is no compatible
+    <code>rdf:type</code> statement for the object).</li>
+<li>A class has <code>owl:cardinality 1</code> or <code>owl:minCardinality 1</code> on an
+    object property or datatype property, and an instance of the class
+    does not have that property.</li>
+<li>A class has <code>owl:cardinality 1</code> or <code>owl:maxCardinality 1</code> on an
+    object property or datatype property, and an instance of the class
+    has more than one object for that property.</li>
+<li>An instance of <code>knora-base:Resource</code> has an object property pointing
+    to a <code>knora-base:Value</code> or to another <code>Resource</code>, and its class has
+    no cardinality for that property.</li>
+<li>An instance of <code>knora-base:Value</code> has a subproperty of
+    <code>knora-base:valueHas</code>, and its class has no cardinality for that
+    property.</li>
+<li>A datatype property has an empty string as an object.</li>
+</ul>
+<p>Cardinalities in base classes are inherited by derived classes. Derived
+classes can override inherited cardinalities by making them more
+restrictive, i.e. by specifying a subproperty of the one specified in
+the original cardinality.</p>
+<p>Instances of <code>Resource</code> and <code>Value</code> can be marked as deleted, using the
+property <code>isDeleted</code>. This must be taken into account as follows:</p>
+<ul>
+<li>With <code>owl:cardinality 1</code> or <code>owl:maxCardinality 1</code>, if the object of
+    the property can be marked as deleted, the property must not have
+    more than one object that has not been marked as deleted. In other
+    words, it's OK if there is more than one object, as long only one of
+    them has <code>knora-base:isDeleted false</code>.</li>
+<li>With <code>owl:cardinality 1</code> or <code>owl:minCardinality 1</code>, the property
+    must have an object, but it's OK if the property's only object is
+    marked as deleted. We allow this because the subject and object may
+    have different owners, and it may not be feasible for them to
+    coordinate their work. The owner of the object should always be able
+    to mark it as deleted. (It could be useful to notify the owner of
+    the subject when this happens, but that is beyond the scope of
+    consistency checking.)</li>
+</ul>
+<h2 id="design">Design</h2>
+<p><a href="https://ontotext.com/products/graphdb/">Ontotext GraphDB</a> provides a
+mechanism for checking the consistency of data in a repository each time
+an update transaction is committed. Knora provides GraphDB-specific
+consistency rules that take advantage of this feature to provide an
+extra layer of consistency checks, in addition to the checks that are
+implemented in Knora.</p>
+<p>When a repository is created in GraphDB, a set of consistency rules can
+be provided, and GraphDB's consistency checker can be turned on to
+ensure that each update transaction respects these rules, as described
+in the section
+<a href="http://graphdb.ontotext.com/documentation/standard/reasoning.html">Reasoning</a>
+of the GraphDB documentation. Like custom inference rules, consistency
+rules are defined in files with the <code>.pie</code> filename extension, in a
+GraphDB-specific syntax.</p>
+<p>We have added rules to the standard RDFS inference rules file
+<code>builtin_RdfsRules.pie</code>, to create the file <code>KnoraRules.pie</code>. The <code>.ttl</code>
+configuration file that is used to create the repository must contain
+these settings:</p>
+<pre><code>owlim:ruleset &quot;/path/to/KnoraRules.pie&quot; ;
+owlim:check-for-inconsistencies &quot;true&quot; ;
+</code></pre>
+<p>The path to <code>KnoraRules.pie</code> must be an absolute path. The scripts
+provided with Knora to create test repositories set this path
+automatically.</p>
+<p>Consistency checking in GraphDB relies on reasoning. GraphDB's reasoning
+is
+<a href="http://graphdb.ontotext.com/documentation/standard/introduction-to-semantic-web.html#reasoning-strategies">Forward-chaining</a>,
+which means that reasoning is applied to the contents of each update,
+before the update transaction is committed, and the inferred statements
+are added to the repository.</p>
+<p>A GraphDB rules file can contain two types of rules: inference rules and
+consistency rules. Before committing an update transaction, GraphDB
+applies inference rules, then consistency rules. If any of the
+consistency rules are violated, the transaction is rolled back.</p>
+<p>An inference rule has this form:</p>
+<pre><code>Id: &lt;rule_name&gt;
+    &lt;premises&gt; &lt;optional_constraints&gt;
+    -------------------------------
+    &lt;consequences&gt; &lt;optional_constraints&gt;
+</code></pre>
+<p>The premises are a pattern that tries to match statements found in the
+data. Optional constraints, which are enclosed in square brackets, make
+it possible to specify the premises more precisely, or to specify a
+named graph (see examples below). Consequences are the statements that
+will be inferred if the premises match. A line of hyphens separates
+premises from consequences.</p>
+<p>A GraphDB consistency rule has a similar form:</p>
+<pre><code>Consistency: &lt;rule_name&gt;
+    &lt;premises&gt; &lt;optional_constraints&gt;
+    -------------------------------
+    &lt;consequences&gt; &lt;optional_constraints&gt;
+</code></pre>
+<p>The differences between inference rules and consistency rules are:</p>
+<ul>
+<li>A consistency rule begins with <code>Consistency</code> instead of <code>Id</code>.</li>
+<li>In a consistency rule, the consequences are optional. Instead of
+    representing statements to be inferred, they represent statements
+    that must exist if the premises are satisfied. In other words, if
+    the premises are satisfied and the consequences are not found, the
+    rule is violated.</li>
+<li>If a consistency rule doesn't specify any consequences, and the
+    premises are satisfied, the rule is violated.</li>
+</ul>
+<p>Rules use variable names for subjects, predicates, and objects, and they
+can use actual property names.</p>
+<h3 id="empty-string-as-object">Empty string as object</h3>
+<p>If subject <code>i</code> has a predicate <code>p</code> whose object is an empty string, the
+constraint is violated:</p>
+<pre><code>Consistency: empty_string
+    i p &quot;&quot;
+    ------------------------------------
+</code></pre>
+<h3 id="subject-and-object-class-constraints">Subject and object class constraints</h3>
+<p>If subject <code>i</code> has a predicate <code>p</code> that requires a subject of type <code>t</code>,
+and <code>i</code> is not a <code>t</code>, the constraint is violated:</p>
+<pre><code>Consistency: subject_class_constraint
+    p &lt;knora-base:subjectClassConstraint&gt; t
+    i p j
+    ------------------------------------
+    i &lt;rdf:type&gt; t
+</code></pre>
+<p>If subject <code>i</code> has a predicate <code>p</code> that requires an object of type <code>t</code>,
+and the object of <code>p</code> is not a <code>t</code>, the constraint is violated:</p>
+<pre><code>Consistency: object_class_constraint
+    p &lt;knora-base:objectClassConstraint&gt; t
+    i p j
+    ------------------------------------
+    j &lt;rdf:type&gt; t
+</code></pre>
+<h3 id="cardinality-constraints">Cardinality constraints</h3>
+<p>A simple implementation of a consistency rule to check
+<code>owl:maxCardinality 1</code>, for objects that can be marked as deleted, could
+look like this:</p>
+<pre><code>Consistency: max_cardinality_1_with_deletion_flag
+    i &lt;rdf:type&gt; r
+    r &lt;owl:maxCardinality&gt; &quot;1&quot;^^xsd:nonNegativeInteger
+    r &lt;owl:onProperty&gt; p
+    i p j
+    i p k [Constraint j != k]
+    j &lt;knora-base:isDeleted&gt; &quot;false&quot;^^xsd:boolean
+    k &lt;knora-base:isDeleted&gt; &quot;false&quot;^^xsd:boolean
+    ------------------------------------
+</code></pre>
+<p>This means: if resource <code>i</code> is a subclass of an <code>owl:Restriction</code> <code>r</code>
+with <code>owl:maxCardinality 1</code> on property <code>p</code>, and the resource has two
+different objects for that property, neither of which is marked as
+deleted, the rule is violated. Note that this takes advantage of the
+fact that <code>Resource</code> and <code>Value</code> have <code>owl:cardinality 1</code> on <code>isDeleted</code>
+(<code>isDeleted</code> must be present even if false), so we do not need to check
+whether <code>i</code> is actually something that can be marked as deleted.</p>
+<p>However, this implementation would be much too slow. We therefore use
+two optimisations suggested by Ontotext:</p>
+<ol>
+<li>Add custom inference rules to make tables (i.e. named graphs) of
+    pre-calculated information about the cardinalities on properties of
+    subjects, and use those tables to simplify the consistency rules.</li>
+<li>Use the <code>[Cut]</code> constraint to avoid generating certain redundant
+    compiled rules (see <a href="http://graphdb.ontotext.com/documentation/standard/reasoning.html#entailment-rules">Entailment
+    rules</a>).</li>
+</ol>
+<p>For example, to construct a table of subjects belonging to classes that
+have <code>owl:maxCardinality 1</code> on some property <code>p</code>, we use the following
+custom inference rule:</p>
+<pre><code>Id: maxCardinality_1_table
+    i &lt;rdf:type&gt; r
+    r &lt;owl:maxCardinality&gt; &quot;1&quot;^^xsd:nonNegativeInteger
+    r &lt;owl:onProperty&gt; p
+    ------------------------------------
+    i p r [Context &lt;onto:_maxCardinality_1_table&gt;]
+</code></pre>
+<p>The constraint <code>[Context &lt;onto:_maxCardinality_1_table&gt;]</code> means that the
+inferred triples are added to the context (i.e. the named graph)
+<code>http://www.ontotext.com/_maxCardinality_1_table</code>. (Note that we have
+defined the prefix <code>onto</code> as <code>http://www.ontotext.com/</code> in the
+<code>Prefices</code> section of the rules file.) As the GraphDB documentation on
+<a href="http://graphdb.ontotext.com/documentation/standard/reasoning.html#rules">Rules</a>
+explains:</p>
+<blockquote>
+<p>If the context is provided, the statements produced as rule
+consequences are not ‘visible’ during normal query answering. Instead,
+they can only be used as input to this or other rules and only when
+the rule premise explicitly uses the given context.</p>
+</blockquote>
+<p>Now, to find out whether a subject belongs to a class with that
+cardinality on a given property, we only need to match one triple. The
+revised implementation of the rule
+<code>max_cardinality_1_with_deletion_flag</code> is as follows:</p>
+<pre><code>Consistency: max_cardinality_1_with_deletion_flag
+    i p r [Context &lt;onto:_maxCardinality_1_table&gt;]
+    i p j [Constraint j != k]
+    i p k [Cut]
+    j &lt;knora-base:isDeleted&gt; &quot;false&quot;^^xsd:boolean
+    k &lt;knora-base:isDeleted&gt; &quot;false&quot;^^xsd:boolean
+    ------------------------------------
+</code></pre>
+<p>The constraint <code>[Constraint j != k]</code> means that the premises will be
+satisfied only if the variables <code>j</code> and <code>k</code> do not refer to the same
+thing.</p>
+<p>With these optimisations, the rule is faster by several orders of
+magnitude.</p>
+<p>Since properties whose objects can be marked as deleted must be handled
+differently to properties whose objects cannot be marked as deleted, the
+<code>knora-base</code> ontology provides a property called
+<code>objectCannotBeMarkedAsDeleted</code>. All properties in <code>knora-base</code> whose
+objects cannot take the <code>isDeleted</code> flag (including datatype properties)
+should be derived from this property. This is how it is used to check
+<code>owl:maxCardinality 1</code> for objects that cannot be marked as deleted:</p>
+<pre><code>Consistency: max_cardinality_1_without_deletion_flag
+    i p r [Context &lt;onto:_maxCardinality_1_table&gt;]
+    p &lt;rdfs:subPropertyOf&gt; &lt;knora-base:objectCannotBeMarkedAsDeleted&gt;
+    i p j [Constraint j != k]
+    i p k [Cut]
+    ------------------------------------
+</code></pre>
+<p>To check <code>owl:minCardinality 1</code>, we do not care whether the object can
+be marked as deleted, so we can use this simple rule:</p>
+<pre><code>Consistency: min_cardinality_1_any_object
+    i p r [Context &lt;onto:_minCardinality_1_table&gt;]
+    ------------------------------------
+    i p j
+</code></pre>
+<p>This means: if a subject <code>i</code> belongs to a class that has
+<code>owl:minCardinality 1</code> on property <code>p</code>, and <code>i</code> has no object for <code>p</code>,
+the rule is violated.</p>
+<p>To check <code>owl:cardinality 1</code>, we need two rules: one that checks whether
+there are too few objects, and one that checks whether there are too
+many. To check whether there are too few objects, we don't care whether
+the objects can be marked as deleted, so the rule is the same as
+<code>min_cardinality_1_any_object</code>, except for the cardinality:</p>
+<pre><code>Consistency: cardinality_1_not_less_any_object
+    i p r [Context &lt;onto:_cardinality_1_table&gt;]
+    ------------------------------------
+    i p j
+</code></pre>
+<p>To check whether there are too many objects, we need to know whether the
+objects can be marked as deleted or not. In the case where the objects
+can be marked as deleted, the rule is the same as
+<code>max_cardinality_1_with_deletion_flag</code>, except for the cardinality:</p>
+<pre><code>Consistency: cardinality_1_not_greater_with_deletion_flag
+    i p r [Context &lt;onto:_cardinality_1_table&gt;]
+    i p j [Constraint j != k]
+    i p k [Cut]
+    j &lt;knora-base:isDeleted&gt; &quot;false&quot;^^xsd:boolean
+    k &lt;knora-base:isDeleted&gt; &quot;false&quot;^^xsd:boolean
+    ------------------------------------
+</code></pre>
+<p>In the case where the objects cannot be marked as deleted, the rule is
+the same as <code>max_cardinality_1_without_deletion_flag</code>, except for the
+cardinality:</p>
+<pre><code>Consistency: cardinality_1_not_less_any_object
+    i p r [Context &lt;onto:_cardinality_1_table&gt;]
+    ------------------------------------
+    i p j
+</code></pre>
+<p>Knora allows a subproperty of <code>knora-base:hasValue</code> or
+<code>knora-base:hasLinkTo</code> to be a predicate of a resource only if the
+resource's class has some cardinality for the property. For convenience,
+<code>knora-base:hasValue</code> and <code>knora-base:hasLinkTo</code> are subproperties of
+<code>knora-base:resourceProperty</code>, which is used to check this constraint in
+the following rule:</p>
+<pre><code>Consistency: resource_prop_cardinality_any
+    i &lt;knora-base:resourceProperty&gt; j
+    ------------------------------------
+    i p j
+    i &lt;rdf:type&gt; r
+    r &lt;owl:onProperty&gt; p
+</code></pre>
+<p>If resource <code>i</code> has a subproperty of <code>knora-base:resourceProperty</code>, and
+<code>i</code> is not a member of a subclass of an <code>owl:Restriction</code> <code>r</code> with a
+cardinality on that property (or on one of its base properties), the
+rule is violated.</p>
+<p>A similar rule, <code>value_prop_cardinality_any</code>, ensures that if a value
+has a subproperty of <code>knora-base:valueHas</code>, the value's class has some
+cardinality for that property.</p>
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: 2021-06-29
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../triplestore-updates/" title="Triplestore Updates" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Triplestore Updates
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../authentication/" title="Authentication" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Authentication
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            &copy; 2017 - 2021 <a href='https://dasch.swiss' target='_blank'>Data and Service Center for the Humanities (DaSCH)</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../../assets/javascripts/vendor.77e55a48.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.aa3f9871.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../../../..",
+          features: ['navigation.tabs', 'navigation.sections'],
+          search: Object.assign({
+            worker: "../../../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
