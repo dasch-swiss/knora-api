@@ -33,7 +33,7 @@
 
     :attachedToProject knora-admin:SystemProject ;
 
-    :ontologyVersion "knora-base v11" .
+    :ontologyVersion "knora-base v12" .
 
 
 
@@ -1630,6 +1630,18 @@
                 :objectDatatypeConstraint xsd:string .
 
 
+###  http://www.knora.org/ontology/knora-base#resourceHasUUID
+
+:resourceHasUUID  rdf:type owl:DatatypeProperty ;
+
+                  rdfs:subPropertyOf :objectCannotBeMarkedAsDeleted ;
+
+                  rdfs:comment "The UUID of a resource"@en ;
+
+                  :subjectClassConstraint :Resource ;
+
+                  :objectDatatypeConstraint xsd:string .
+
 
 #################################################################
 #
@@ -2282,6 +2294,10 @@
                           [ rdf:type owl:Restriction ;
                             owl:onProperty :creationDate ;
                             owl:cardinality "1"^^xsd:nonNegativeInteger
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :resourceHasUUID ;
+                            owl:maxCardinality "1"^^xsd:nonNegativeInteger
                           ] ,
                           [ rdf:type owl:Restriction ;
                             owl:onProperty :lastModificationDate ;

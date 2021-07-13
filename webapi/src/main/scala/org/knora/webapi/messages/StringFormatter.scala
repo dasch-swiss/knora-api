@@ -153,7 +153,7 @@ object StringFormatter {
   /**
     * The version number of the current version of Knora's ARK URL format.
     */
-  val ArkVersion: String = "1"
+  val ArkVersion: String = "2"
 
   /**
     * The length of the canonical representation of a UUID.
@@ -857,15 +857,15 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
 
   // A regex that matches a Knora resource IRI.
   private val ResourceIriRegex: Regex =
-    ("^http://" + IriDomain + "/(" + ProjectIDPattern + ")/(" + Base64UrlPattern + ")$").r
+    ("^http://" + IriDomain + "/resources/(" + Base64UrlPattern + ")$").r
 
   // A regex that matches a Knora value IRI.
   private val ValueIriRegex: Regex =
-    ("^http://" + IriDomain + "/(" + ProjectIDPattern + ")/(" + Base64UrlPattern + ")/values/(" + Base64UrlPattern + ")$").r
+    ("^http://" + IriDomain + "/resources/(" + Base64UrlPattern + ")/values/(" + Base64UrlPattern + ")$").r
 
   // A regex that matches a Knora standoff IRI.
   private val StandoffIriRegex: Regex =
-    ("^http://" + IriDomain + "/(" + ProjectIDPattern + ")/(" + Base64UrlPattern + ")/values/(" + Base64UrlPattern + """)/standoff/(\d+)$""").r
+    ("^http://" + IriDomain + "/resources/(" + Base64UrlPattern + ")/values/(" + Base64UrlPattern + """)/standoff/(\d+)$""").r
 
   // A regex that parses a Knora ARK timestamp.
   private val ArkTimestampRegex: Regex =
@@ -948,34 +948,28 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
         if (DataIriStarts.exists(startStr => iri.startsWith(startStr))) {
           // This is a Knora data IRI. What sort of data IRI is it?
           iri match {
-            case ResourceIriRegex(projectCode: String, resourceID: String) =>
+            case ResourceIriRegex(resourceID: String) =>
               // It's a resource IRI.
               SmartIriInfo(
                 iriType = KnoraDataIri,
                 ontologySchema = None,
-                projectCode = Some(projectCode),
                 resourceID = Some(resourceID)
               )
 
-            case ValueIriRegex(projectCode: String, resourceID: String, valueID: String) =>
+            case ValueIriRegex(resourceID: String, valueID: String) =>
               // It's a value IRI.
               SmartIriInfo(
                 iriType = KnoraDataIri,
                 ontologySchema = None,
-                projectCode = Some(projectCode),
                 resourceID = Some(resourceID),
                 valueID = Some(valueID)
               )
 
-            case StandoffIriRegex(projectCode: String,
-                                  resourceID: String,
-                                  valueID: String,
-                                  standoffStartIndex: String) =>
+            case StandoffIriRegex(resourceID: String, valueID: String, standoffStartIndex: String) =>
               // It's a standoff IRI.
               SmartIriInfo(
                 iriType = KnoraDataIri,
                 ontologySchema = None,
-                projectCode = Some(projectCode),
                 resourceID = Some(resourceID),
                 valueID = Some(valueID),
                 standoffStartIndex = Some(standoffStartIndex.toInt)
@@ -1488,9 +1482,9 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
       if (!isKnoraDataIri) {
         false
       } else {
-        (iriInfo.projectCode, iriInfo.resourceID, iriInfo.valueID) match {
-          case (Some(_), Some(_), None) => true
-          case _                        => false
+        (iriInfo.resourceID, iriInfo.valueID) match {
+          case (Some(_), None) => true
+          case _               => false
         }
       }
     }
@@ -1499,9 +1493,9 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
       if (!isKnoraDataIri) {
         false
       } else {
-        (iriInfo.projectCode, iriInfo.resourceID, iriInfo.valueID) match {
-          case (Some(_), Some(_), Some(_)) => true
-          case _                           => false
+        (iriInfo.resourceID, iriInfo.valueID) match {
+          case (Some(_), Some(_)) => true
+          case _                  => false
         }
       }
     }
@@ -1510,9 +1504,9 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
       if (!isKnoraDataIri) {
         false
       } else {
-        (iriInfo.projectCode, iriInfo.resourceID, iriInfo.valueID, iriInfo.standoffStartIndex) match {
-          case (Some(_), Some(_), Some(_), Some(_)) => true
-          case _                                    => false
+        (iriInfo.resourceID, iriInfo.valueID, iriInfo.standoffStartIndex) match {
+          case (Some(_), Some(_), Some(_)) => true
+          case _                           => false
         }
       }
     }
@@ -1524,7 +1518,6 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
 
       val arkUrlTry = Try {
         makeArkUrl(
-          projectID = iriInfo.projectCode.get,
           resourceID = iriInfo.resourceID.get,
           maybeValueUUID = None,
           maybeTimestamp = maybeTimestamp
@@ -1545,7 +1538,6 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
 
       val arkUrlTry = Try {
         makeArkUrl(
-          projectID = iriInfo.projectCode.get,
           resourceID = iriInfo.resourceID.get,
           maybeValueUUID = Some(valueUUID),
           maybeTimestamp = maybeTimestamp
@@ -2801,8 +2793,7 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
     *                       cite.
     * @return an ARK URL that can be resolved to obtain the resource or value.
     */
-  private def makeArkUrl(projectID: String,
-                         resourceID: String,
+  private def makeArkUrl(resourceID: String,
                          maybeValueUUID: Option[UUID] = None,
                          maybeTimestamp: Option[Instant] = None): String = {
 
@@ -2835,7 +2826,7 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
     val resourceIDWithCheckDigit: String = addCheckDigitAndEscape(resourceID)
 
     // Construct an ARK URL for the resource, without a value UUID and without a timestamp.
-    val resourceArkUrl = s"$resolver/ark:/$assignedNumber/$ArkVersion/$projectID/$resourceIDWithCheckDigit"
+    val resourceArkUrl = s"$resolver/ark:/$assignedNumber/$ArkVersion/$resourceIDWithCheckDigit"
 
     // If a value UUID was provided, Base64-encode it, add a check digit, and append the result to the URL.
     val arkUrlWithoutTimestamp = maybeValueUUID match {
@@ -3017,6 +3008,28 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
   }
 
   /**
+    * If an IRI ends with a UUID, validates that it is a Base64-encoded UUID. If it is a valid UUID, returns it. Otherwise,
+    * makes a random UUID and returns that.
+    *
+    * @param givenIRI the IRI of an entity.
+    * @return a Base64-encoded UUID.
+    */
+  def getUUIDFromIriOrMakeRandom(givenIRI: IRI): UUID = {
+    val ending: String = givenIRI.split('/').last
+    if (ending.length == Base64UuidLength) {
+      val decodeTry = Try {
+        base64DecodeUuid(ending)
+      }
+      decodeTry match {
+        case Success(_) => base64DecodeUuid(ending)
+        case Failure(_) => UUID.randomUUID
+      }
+    } else {
+      UUID.randomUUID
+    }
+  }
+
+  /**
     * Checks if a string is the right length to be a canonical or Base64-encoded UUID.
     *
     * @param idStr the string to check.
@@ -3027,14 +3040,17 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
   }
 
   /**
-    * Creates a new resource IRI based on a UUID.
-    *
-    * @param projectShortcode the project's shortcode.
+    * Creates a new resource IRI based on a UUID. If a resource UUID is given, uses that for making resource IRI.
+    * Otherwise, makes a random UUID for the resource and uses it for making resource IRI.
+    * @param resourceUUID the optional UUID for a resource.
     * @return a new resource IRI.
     */
-  def makeRandomResourceIri(projectShortcode: String): IRI = {
-    val knoraResourceID = makeRandomBase64EncodedUuid
-    s"http://$IriDomain/$projectShortcode/$knoraResourceID"
+  def makeResourceIri(resourceUUID: Option[UUID] = None): IRI = {
+    val knoraResourceID = resourceUUID match {
+      case Some(uuid: UUID) => base64EncodeUuid(uuid)
+      case None             => makeRandomBase64EncodedUuid
+    }
+    s"http://$IriDomain/resources/$knoraResourceID"
   }
 
   /**
@@ -3044,7 +3060,7 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
     * @param givenUUID   the optional given UUID of the value. If not provided, create a random one.
     * @return a new value IRI.
     */
-  def makeRandomValueIri(resourceIri: IRI, givenUUID: Option[UUID] = None): IRI = {
+  def makeValueIri(resourceIri: IRI, givenUUID: Option[UUID] = None): IRI = {
     val valueUUID = givenUUID match {
       case Some(uuid: UUID) => base64EncodeUuid(uuid)
       case _                => makeRandomBase64EncodedUuid
@@ -3135,7 +3151,7 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
     * @param startIndex the standoff tag's start index.
     * @return a standoff tag IRI.
     */
-  def makeRandomStandoffTagIri(valueIri: IRI, startIndex: Int): IRI = {
+  def makeStandoffTagIri(valueIri: IRI, startIndex: Int): IRI = {
     s"$valueIri/standoff/$startIndex"
   }
 
@@ -3198,17 +3214,12 @@ class StringFormatter private (val maybeSettings: Option[KnoraSettingsImpl] = No
     * Validates a custom value IRI, throwing [[BadRequestException]] if the IRI is not valid.
     *
     * @param customValueIri the custom value IRI to be validated.
-    * @param projectCode the project code of the containing resource.
     * @param resourceID the ID of the containing resource.
     * @return the validated IRI.
     */
-  def validateCustomValueIri(customValueIri: SmartIri, projectCode: String, resourceID: String): SmartIri = {
+  def validateCustomValueIri(customValueIri: SmartIri, resourceID: String): SmartIri = {
     if (!customValueIri.isKnoraValueIri) {
       throw BadRequestException(s"<$customValueIri> is not a Knora value IRI")
-    }
-
-    if (!customValueIri.getProjectCode.contains(projectCode)) {
-      throw BadRequestException(s"The provided value IRI does not contain the correct project code")
     }
 
     if (!customValueIri.getResourceID.contains(resourceID)) {

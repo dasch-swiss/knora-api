@@ -126,7 +126,6 @@ object CreateValueRequestV2 extends KnoraJsonLDRequestReaderV2[CreateValueReques
             maybeCustomValueIri: Option[SmartIri] = jsonLDObject.maybeIDAsKnoraDataIri.map { definedNewIri =>
               stringFormatter.validateCustomValueIri(
                 customValueIri = definedNewIri,
-                projectCode = resourceIri.getProjectCode.get,
                 resourceID = resourceIri.getResourceID.get
               )
             }
@@ -301,7 +300,6 @@ object UpdateValueRequestV2 extends KnoraJsonLDRequestReaderV2[UpdateValueReques
 
               stringFormatter.validateCustomValueIri(
                 customValueIri = definedNewIri,
-                projectCode = valueIri.getProjectCode.get,
                 resourceID = valueIri.getResourceID.get
               )
             }
@@ -1783,7 +1781,7 @@ case class TextValueContentV2(ontologySchema: OntologySchema,
         standoffNode: StandoffTagV2 =>
           CreateStandoffTagV2InTriplestore(
             standoffNode = standoffNode,
-            standoffTagInstanceIri = stringFormatter.makeRandomStandoffTagIri(
+            standoffTagInstanceIri = stringFormatter.makeStandoffTagIri(
               valueIri = valueIri,
               startIndex = standoffNode.startIndex) // generate IRI for new standoff node
           )

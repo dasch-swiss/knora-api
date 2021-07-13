@@ -944,7 +944,7 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
                 internalMimeType = row.rowMap("internalMimeType"),
                 internalFilename = row.rowMap("internalFilename"),
                 originalFilename = row.rowMap.get("originalFilename"),
-                projectShortcode = projectShortcode,
+                projectShortcode = projectShortcode, // TODO change to project UUID
                 dimX = row.rowMap("dimX").toInt,
                 dimY = row.rowMap("dimY").toInt
               )
@@ -993,7 +993,7 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
         firstprop = row.rowMap.get("firstprop"),
         seqnum = row.rowMap.get("seqnum").map(_.toInt),
         permissionCode = permissionCode,
-        projectShortcode = projectShortcode,
+        projectShortcode = projectShortcode, // TODO: change to project UUID
         fileValue = createStillImageFileValueFromResultRow(projectShortcode, row)
       )
     }
@@ -1077,11 +1077,11 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
             .mapTo[SparqlSelectResult]
           rows: Seq[VariableResultsRow] = contextQueryResponse.results.bindings
 
+          projectShortcode: String = resInfoV1.project_shortcode //TODO: change this to project UUID
+
           // The results consist of one row per source object.
           sourceObjects: Seq[SourceObject] = rows.map { row: VariableResultsRow =>
             val sourceObject: IRI = row.rowMap("sourceObject")
-            val projectShortcode: String = sourceObject.toSmartIri.getProjectCode
-              .getOrElse(throw InconsistentRepositoryDataException(s"Invalid resource IRI: $sourceObject"))
             createSourceObjectFromResultRow(projectShortcode, row)
           }
 
@@ -1452,10 +1452,17 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
 
       namedGraph = StringFormatter.getGeneralInstance.projectDataNamedGraphV2(projectADM)
 
-      // Create random IRIs for resources, collect in Map[clientResourceID, IRI]
+      // Create random UUIDs for resources, collect in Map[clientResourceID, UUID]
+      clientResourceIDsToResourceUUIDs: Map[String, UUID] = resourcesToCreate
+        .map(resRequest => resRequest.clientResourceID -> UUID.randomUUID)
+        .toMap
+
       clientResourceIDsToResourceIris: Map[String, IRI] = new ErrorHandlingMap(
         toWrap = resourcesToCreate
-          .map(resRequest => resRequest.clientResourceID -> stringFormatter.makeRandomResourceIri(projectADM.shortcode))
+          .map(
+            resRequest =>
+              resRequest.clientResourceID -> stringFormatter.makeResourceIri(
+                clientResourceIDsToResourceUUIDs.get(resRequest.clientResourceID)))
           .toMap,
         errorTemplateFun = { key =>
           s"Resource $key is the target of a link, but was not provided in the request"
@@ -1604,7 +1611,7 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
               throw BadRequestException(
                 s"Instances of knora-base:Resource cannot be created, only instances of subclasses")
             }
-
+            resourceUUID = clientResourceIDsToResourceUUIDs(resourceCreateRequest.clientResourceID)
             resourceIri = clientResourceIDsToResourceIris(resourceCreateRequest.clientResourceID)
 
             // Check every resource to be created with respect of ontology and cardinalities. Links are still
@@ -1660,6 +1667,7 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
           } yield
             SparqlTemplateResourceToCreate(
               resourceIri = resourceIri,
+              resourceUUID = resourceUUID,
               permissions = defaultObjectAccessPermissions,
               sparqlForValues = generateSparqlForValuesResponse.insertSparql,
               resourceClassIri = resourceCreateRequest.resourceTypeIri,
@@ -1951,7 +1959,8 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
         triplestore = settings.triplestoreType,
         resourcesToCreate = resourcesToCreate,
         projectIri = projectIri,
-        creatorIri = creatorIri
+        creatorIri = creatorIri,
+        formatter = stringFormatter
       )
       .toString()
   }
@@ -2045,6 +2054,7 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
                              projectADM: ProjectADM,
                              label: String,
                              resourceIri: IRI,
+                             resourceUUID: UUID,
                              values: Map[IRI, Seq[CreateValueV1WithComment]],
                              file: Option[FileValueV1],
                              creatorIri: IRI,
@@ -2136,6 +2146,7 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
       resourcesToCreate: Seq[SparqlTemplateResourceToCreate] = Seq(
         SparqlTemplateResourceToCreate(
           resourceIri = resourceIri,
+          resourceUUID = resourceUUID,
           permissions = defaultResourceClassAccessPermissions,
           sparqlForValues = generateSparqlForValuesResponse.insertSparql,
           resourceClassIri = resourceClassIri,
@@ -2242,8 +2253,9 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
           s"Cannot create a resource in project $resourceProjectIri with resource class $resourceClassIri, which is defined in a non-shared ontology in another project")
       }
 
-      namedGraph = StringFormatter.getGeneralInstance.projectDataNamedGraphV2(projectResponse.project)
-      resourceIri: IRI = stringFormatter.makeRandomResourceIri(projectResponse.project.shortcode)
+      namedGraph: IRI = StringFormatter.getGeneralInstance.projectDataNamedGraphV2(projectResponse.project)
+      resourceUUID: UUID = UUID.randomUUID
+      resourceIri: IRI = stringFormatter.makeResourceIri(Some(resourceUUID))
 
       // Check user's PermissionProfile (part of UserADM) to see if the user has the permission to
       // create a new resource in the given project.
@@ -2263,6 +2275,7 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
             projectADM = projectResponse.project,
             label = label,
             resourceIri = resourceIri,
+            resourceUUID = resourceUUID,
             values = values,
             file = file,
             creatorIri = userIri,
@@ -2613,6 +2626,10 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
 
       groupedPropsByType: GroupedPropertiesByType <- getGroupedProperties(resourceIri)
 
+      (_, resInfo) <- getResourceInfoV1(resourceIri = resourceIri,
+                                        featureFactoryConfig = featureFactoryConfig,
+                                        userProfile = userProfile,
+                                        queryOntology = true)
       // TODO: Should we get rid of the tuple and replace it by a case class?
       (propertyInfoMap: Map[IRI, PropertyInfoV1],
        resourceEntityInfoMap: Map[IRI, ClassInfoV1],
@@ -2644,8 +2661,7 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
           Future((Map.empty[IRI, PropertyInfoV1], Map.empty[IRI, ClassInfoV1], Map.empty[IRI, KnoraCardinalityInfo]))
       }
 
-      projectShortcode = resourceIri.toSmartIri.getProjectCode
-        .getOrElse(throw InconsistentRepositoryDataException(s"Invalid resource IRI: $resourceIri"))
+      projectShortcode = resInfo.project_shortcode //TODO: change this to project UUID
 
       queryResult <- queryResults2PropertyV1s(
         containingResourceIri = resourceIri,
@@ -2694,12 +2710,22 @@ class ResourcesResponderV1(responderData: ResponderData) extends Responder(respo
           case (subject, predicate) => subject == OntologyConstants.KnoraBase.AttachedToProject
         }
 
-        resourceProject = maybeResourceProjectStatement
+        resourceProject: IRI = maybeResourceProjectStatement
           .getOrElse(
             throw InconsistentRepositoryDataException(s"Resource $resourceIri has no knora-base:attachedToProject"))
           ._2
-        projectShortcode: String = resourceIri.toSmartIri.getProjectCode
-          .getOrElse(throw InconsistentRepositoryDataException(s"Invalid resource IRI $resourceIri"))
+
+        projectInfoResponse <- {
+          responderManager ? ProjectGetRequestADM(
+            identifier = ProjectIdentifierADM(maybeIri = Some(resourceProject)),
+            featureFactoryConfig = featureFactoryConfig,
+            requestingUser = userProfile
+          )
+        }.mapTo[ProjectGetResponseADM]
+
+        projectADM = projectInfoResponse.project
+        //TODO: change this to project UUID
+        projectShortcode: String = projectADM.shortcode
 
         // Get the rows describing file values from the query results, grouped by file value IRI.
         fileValueGroupedRows: Seq[(IRI, Seq[VariableResultsRow])] = resInfoResponseRows

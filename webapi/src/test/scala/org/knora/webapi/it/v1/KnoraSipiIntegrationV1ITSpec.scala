@@ -227,7 +227,7 @@ class KnoraSipiIntegrationV1ITSpec
                    |            {"richtext_value": {"utf8str": "Chlaus"}}
                    |        ],
                    |        "http://www.knora.org/ontology/0803/incunabula#partOf": [
-                   |            {"link_value": "http://rdfh.ch/0803/5e77e98d2603"}
+                   |            {"link_value": "http://rdfh.ch/resources/m3iqHLxZSt689pieHwW__w"}
                    |        ],
                    |        "http://www.knora.org/ontology/0803/incunabula#seqnum": [{"int_value": 99999999}]
                    |    },
@@ -281,7 +281,7 @@ class KnoraSipiIntegrationV1ITSpec
       val standoffXml =
         """<?xml version="1.0" encoding="UTF-8"?>
                   |<text>
-                  |    <u><strong>Wild thing</strong></u>, <u>you make my</u> <a class="salsah-link" href="http://rdfh.ch/0803/9935159f67">heart</a> sing
+                  |    <u><strong>Wild thing</strong></u>, <u>you make my</u> <a class="salsah-link" href="http://rdfh.ch/resources/60QF3uJ-SdKOj6Awfb5XIg">heart</a> sing
                   |</text>
                 """.stripMargin
 
@@ -646,7 +646,7 @@ class KnoraSipiIntegrationV1ITSpec
         case Some(JsString(gravsearchIri)) => gravsearchIri
         case _                             => throw InvalidApiJsonException("expected IRI for header XSLT template")
       }
-
+      println(headerXSLTIri)
       // get tei TEI/XML representation of a beol:letter
 
       val letterTEIRequest: HttpRequest = Get(
@@ -713,7 +713,7 @@ class KnoraSipiIntegrationV1ITSpec
     }
 
     "provide a helpful error message if an XSLT file is not found" in {
-      val missingHeaderXSLTIri = "http://rdfh.ch/0801/608NfPLCRpeYnkXKABC5mg"
+      val missingHeaderXSLTIri = "http://rdfh.ch/resources/608NfPLCRpeYnkXKABC5mg"
 
       val letterTEIRequest: HttpRequest = Get(
         baseApiUrl + "/v2/tei/" + URLEncoder.encode(letterIri.get, "UTF-8") +
